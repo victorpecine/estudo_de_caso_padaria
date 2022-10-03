@@ -9,6 +9,12 @@
 * PyDOE2 1.3.0
 * Seaborn 0.11.2
 
+## Limites
+|Ingrediente|Limite superior (kg)|Limite inferior (kg)|
+:---: | :---: | :---:
+|Chocolate|0,5|1,5|
+|Farinha|0,1|0,5|
+
 ## Enunciado
 Uma padaria quer aumentar a produção de cupcakes, mas o proprietário tem dúvidas sobre como passar de uma produção em escala pequena para uma escala maior e capaz de atender mais clientes.
 O proprietário precisa entender melhor a receita de modo a tirar mais proveito dela, evitando gastar dinheiro com ingredientes desnecessários. Dessa forma, será possível não produzir um número maior de cupcakes a cada fornada, aumentando seu lucro.
@@ -40,3 +46,11 @@ Entender como a quantidade de farinha e chocolate afetam a quantidade de cupcake
 > 200 g de açúcar
 
 > 5 g de fermento
+
+## Resultado dos ensaios (planejamento fatorial)
+|Farinha|Chocolate|Quantidade|
+:---: | :---: | :---:
+|-1|-1|19|
+|1|-1|37|
+|-1|1|24|
+|1|1|49|
