@@ -1,3 +1,14 @@
+## Conteúdo
+* Planejamento fatorial
+* Testes de hipóteses
+* Mapa de cores
+
+## Bibliotecas
+* Pandas 1.4.4
+* Numpy 1.21.5
+* PyDOE2 1.3.0
+* Seaborn 0.11.2
+
 ## Enunciado
 Uma padaria quer aumentar a produção de cupcakes, mas o proprietário tem dúvidas sobre como passar de uma produção em escala pequena para uma escala maior e capaz de atender mais clientes.
 O proprietário precisa entender melhor a receita de modo a tirar mais proveito dela, evitando gastar dinheiro com ingredientes desnecessários. Dessa forma, será possível não produzir um número maior de cupcakes a cada fornada, aumentando seu lucro.
