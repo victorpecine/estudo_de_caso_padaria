@@ -1,7 +1,9 @@
+from statistics import mode
 import pandas as pd
-import numpy as np
 import pyDOE2 as doe
-import seaborn as sns
+import statsmodels.api as sm
+import statsmodels.formula.api as smf
+
 
 # Matriz de ensaios com planejamento fatorial com 2 variáveis
 ensaios = doe.ff2n(2)
@@ -12,29 +14,33 @@ df_ensaios = pd.DataFrame(ensaios, columns=['farinha', 'chocolate'])
 df_ensaios['quantidade'] = [19, 37, 24, 49]
 
 
-# Análises gráficas
-sns.set_palette('terrain')
+# Modelo estatístico
+modelo = smf.ols(data=df_ensaios, formula='quantidade ~ farinha + chocolate + farinha:chocolate')
+# ~ representa igualdade
+# : representa interação entre variáveis
 
-sns.set_style('darkgrid')
-
-# Farinha
-ax1 = sns.lmplot(data=df_ensaios, x='farinha', y='quantidade', ci=False, hue='chocolate')
-
-ax1.set(xticks=(-1, 1))
-
-ax1.set_xlabels('Farinha')
-
-ax1.set_ylabels('Quantidade de cupcakes')
-
-ax1.savefig('graficos/farinha_qtd_cupcakes.png')
-
-# Chocolate
-ax2 = sns.lmplot(data=df_ensaios, x='chocolate', y='quantidade', ci=False, hue='farinha')
-
-ax2.set(xticks=(-1, 1))
-
-ax2.set_xlabels('Chocolate')
-
-ax2.set_ylabels('Quantidade de cupcakes')
-
-ax2.savefig('graficos/chocolate_qtd_cupcakes.png')
+modelo_ajustado = modelo.fit()
+#                             OLS Regression Results
+# ==============================================================================
+# Dep. Variable:             quantidade   R-squared:                       1.000
+# Model:                            OLS   Adj. R-squared:                    nan
+# Method:                 Least Squares   F-statistic:                       nan
+# Date:                Mon, 03 Oct 2022   Prob (F-statistic):                nan
+# Time:                        19:12:47   Log-Likelihood:                 126.02
+# No. Observations:                   4   AIC:                            -244.0
+# Df Residuals:                       0   BIC:                            -246.5
+# Df Model:                           3
+# Covariance Type:            nonrobust
+# =====================================================================================
+#                         coef    std err          t      P>|t|      [0.025      0.975]
+# -------------------------------------------------------------------------------------
+# Intercept            32.2500        inf          0        nan         nan         nan
+# farinha              10.7500        inf          0        nan         nan         nan
+# chocolate             4.2500        inf          0        nan         nan         nan
+# farinha:chocolate     1.7500        inf          0        nan         nan         nan
+# ==============================================================================
+# Omnibus:                          nan   Durbin-Watson:                   1.500
+# Prob(Omnibus):                    nan   Jarque-Bera (JB):                0.167
+# Skew:                           0.000   Prob(JB):                        0.920
+# Kurtosis:                       2.000   Cond. No.                         1.00
+# ==============================================================================
