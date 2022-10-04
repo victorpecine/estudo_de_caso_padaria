@@ -1,5 +1,6 @@
 from dis import dis
 from statistics import mode
+from turtle import color
 import numpy as np
 import pandas as pd
 import pyDOE2 as doe
@@ -9,6 +10,7 @@ import seaborn as sns
 from scipy import stats
 import matplotlib.pyplot as plt
 import math
+import matplotlib.cm as cm
 
 
 # Matriz de ensaios com planejamento fatorial com 2 variáveis
@@ -146,3 +148,46 @@ def receita(farinha, chocolate):
     quantidade = coeficientes_ajustados['Intercept'] + coeficientes_ajustados['farinha'] * farinha_normalizada + coeficientes_ajustados['chocolate'] * chocolate_normalizada
 
     return math.floor(quantidade)
+
+
+# Mapa de calor
+x_farinha = np.linspace(start=0.5, stop=1.5, num=10)
+
+x_chocolate = np.linspace(start=0.1, stop=0.5, num=10)
+
+
+pontos = []
+
+for cont_1 in x_farinha:
+    temp = [] # Lista temporária
+
+    for cont_2 in x_chocolate:
+        temp.append(receita(cont_1, cont_2))
+    
+    pontos.append(temp)
+
+
+# Configurações do mapa de calor
+plt.figure(figsize=(18, 10))
+
+plt.xlabel('Farinha (kg)', fontsize=14)
+
+plt.ylabel('Chocolate (kg)', fontsize=14)
+
+plt.tick_params(axis='both', labelsize=14)
+
+
+mapa_cor = plt.imshow(pontos, cmap=cm.rainbow, interpolation='quadric', extent=(0.5, 1.5, 0.1, 0.5), origin='lower',)
+
+
+# Barra de cor
+plt.colorbar().set_label('Quantidade', fontsize=14)
+
+
+# Isolinhas
+linhas = plt.contour(x_farinha, x_chocolate, pontos, colors='k', linewidths=1.5)
+
+plt.clabel(linhas, inline=True, fontsize=14, inline_spacing=10)
+
+
+plt.savefig('graficos/mapa_de_calor.png')
