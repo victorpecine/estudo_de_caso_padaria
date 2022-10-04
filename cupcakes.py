@@ -91,3 +91,35 @@ modelo_ajustado = modelo.fit()
 # ==============================================================================
 
 # Graus de liberdade = 4
+# A hipótese da variável de relação farinha:chocolate deve ser removida do modelo por ter um p_valor > 0,05 (significância)
+
+
+# Modelo atualizado sem a variável de relação farinha:chocolate
+modelo_atualizado = smf.ols(data=df_ensaios, formula='quantidade ~ farinha + chocolate')
+
+modelo_atualizado_ajustado = modelo_atualizado.fit()
+#                             OLS Regression Results
+# ==============================================================================
+# Dep. Variable:             quantidade   R-squared:                       0.950
+# Model:                            OLS   Adj. R-squared:                  0.929
+# Method:                 Least Squares   F-statistic:                     47.09
+# Date:                Mon, 03 Oct 2022   Prob (F-statistic):           0.000571
+# Time:                        23:04:38   Log-Likelihood:                -16.416
+# No. Observations:                   8   AIC:                             38.83
+# Df Residuals:                       5   BIC:                             39.07
+# Df Model:                           2
+# Covariance Type:            nonrobust
+# ==============================================================================
+#                  coef    std err          t      P>|t|      [0.025      0.975]
+# ------------------------------------------------------------------------------
+# Intercept     30.8750      0.842     36.658      0.000      28.710      33.040
+# farinha       10.7500      1.191      9.025      0.000       7.688      13.812
+# chocolate      4.2500      1.191      3.568      0.016       1.188       7.312
+# ==============================================================================
+# Omnibus:                        2.106   Durbin-Watson:                   1.850
+# Prob(Omnibus):                  0.349   Jarque-Bera (JB):                1.245
+# Skew:                           0.868   Prob(JB):                        0.537
+# Kurtosis:                       2.153   Cond. No.                         1.41
+# ==============================================================================
+
+# Graus de liberdade = 5
