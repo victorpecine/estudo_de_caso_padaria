@@ -8,6 +8,7 @@ import statsmodels.formula.api as smf
 import seaborn as sns
 from scipy import stats
 import matplotlib.pyplot as plt
+import math
 
 
 # Matriz de ensaios com planejamento fatorial com 2 variáveis
@@ -129,25 +130,19 @@ modelo_atualizado_ajustado = modelo_atualizado.fit()
 # Graus de liberdade = 5
 
 
-# Comparativo entre valores observados e estimados
-valors_observados = df_ensaios['quantidade']
+coeficientes_ajustados = modelo_atualizado_ajustado.params
 
-valores_estimados = modelo_atualizado_ajustado.predict()
+# Função baseada no modelo para calcular a quantidade de cupcakes
+def receita(farinha, chocolate):
+    limite_normalizado = [-1, 1]
+    limite_farinha = [0.5, 1.5]
+    limite_chocolate = [0.1, 0.5]
 
+    # Conversão dos valores reais em valores normalizados
+    farinha_normalizada = np.interp(farinha, limite_farinha, limite_normalizado)
 
-plt.figure(figsize=(10, 5))
+    chocolate_normalizada = np.interp(chocolate, limite_chocolate, limite_normalizado)
 
-plt.xlabel('Valores estimados', fontsize=14)
+    quantidade = coeficientes_ajustados['Intercept'] + coeficientes_ajustados['farinha'] * farinha_normalizada + coeficientes_ajustados['chocolate'] * chocolate_normalizada
 
-plt.ylabel('Valores observados', fontsize=14)
-
-# Linha guia para o gráfico
-x = np.linspace(start=15, stop=50, num=10) # Valores obtidos a partir de valors_observados e valores_estimados
-
-y = np.linspace(start=15, stop=50, num=10)
-
-plt.plot(x, y, 'r')
-
-plt.scatter(valores_estimados, valors_observados)
-
-plt.savefig('graficos/dispersao_valores_estimados_e_observados.png')
+    return math.floor(quantidade)
