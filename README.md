@@ -10,6 +10,7 @@
 * Seaborn 0.11.2
 * Statsmodels 0.13.2
 * Scipy 1.7.3
+* Matplotlib 3.5.2
 
 ## Limites
 |Ingrediente|Limite superior (kg)|Limite inferior (kg)|

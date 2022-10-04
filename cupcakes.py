@@ -1,6 +1,5 @@
 from dis import dis
 from statistics import mode
-from xml.etree.ElementInclude import LimitedRecursiveIncludeError
 import numpy as np
 import pandas as pd
 import pyDOE2 as doe
@@ -8,6 +7,7 @@ import statsmodels.api as sm
 import statsmodels.formula.api as smf
 import seaborn as sns
 from scipy import stats
+import matplotlib.pyplot as plt
 
 
 # Matriz de ensaios com planejamento fatorial com 2 variáveis
@@ -129,36 +129,25 @@ modelo_atualizado_ajustado = modelo_atualizado.fit()
 # Graus de liberdade = 5
 
 
-# Gráfico padronizado de pareto para o novo modelo
-t_valores = modelo_atualizado_ajustado.tvalues
+# Comparativo entre valores observados e estimados
+valors_observados = df_ensaios['quantidade']
 
-parametros = t_valores.index.tolist()
-
-pareto = sns.barplot(x=t_valores, y=parametros)
-
-pareto.figure.set_size_inches(15, 6)
-
-pareto.tick_params(labelsize=14)
-
-pareto.set_xlabel('t_valor', fontsize=16)
+valores_estimados = modelo_atualizado_ajustado.predict()
 
 
-# Gráfico de valores do t tabelado
-significancia = 0.05
+plt.figure(figsize=(10, 5))
 
-distribuicao = stats.t(df=5) # Graus de liberdade
+plt.xlabel('Valores estimados', fontsize=14)
 
-distribuicao.ppf(q = 1 - (significancia / 2))
-# 2.5705818366147395
+plt.ylabel('Valores observados', fontsize=14)
 
-limites = [distribuicao.ppf(q = 1 - (significancia / 2))] * len(parametros)
-# 2.5705818366147395, 2.5705818366147395, 2.5705818366147395
+# Linha guia para o gráfico
+x = np.linspace(start=15, stop=50, num=10) # Valores obtidos a partir de valors_observados e valores_estimados
 
+y = np.linspace(start=15, stop=50, num=10)
 
-pareto.plot(limites, parametros, 'r')
+plt.plot(x, y, 'r')
 
-grafico_pareto = pareto.get_figure()
+plt.scatter(valores_estimados, valors_observados)
 
-grafico_pareto.savefig('graficos/pareto_padronizado.png')
-
-# Como os valores de t da interseção, farinha e chocolate são superiores aos valores de t calculados (limites), as hipóteses nulas devem ser desconsideradas e as variáveis são estatisticamente significativas
+plt.savefig('graficos/dispersao_valores_estimados_e_observados.png')
