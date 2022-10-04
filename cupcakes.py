@@ -1,9 +1,13 @@
+from dis import dis
 from statistics import mode
+from xml.etree.ElementInclude import LimitedRecursiveIncludeError
 import numpy as np
 import pandas as pd
 import pyDOE2 as doe
 import statsmodels.api as sm
 import statsmodels.formula.api as smf
+import seaborn as sns
+from scipy import stats
 
 
 # Matriz de ensaios com planejamento fatorial com 2 variáveis
@@ -123,3 +127,38 @@ modelo_atualizado_ajustado = modelo_atualizado.fit()
 # ==============================================================================
 
 # Graus de liberdade = 5
+
+
+# Gráfico padronizado de pareto para o novo modelo
+t_valores = modelo_atualizado_ajustado.tvalues
+
+parametros = t_valores.index.tolist()
+
+pareto = sns.barplot(x=t_valores, y=parametros)
+
+pareto.figure.set_size_inches(15, 6)
+
+pareto.tick_params(labelsize=14)
+
+pareto.set_xlabel('t_valor', fontsize=16)
+
+
+# Gráfico de valores do t tabelado
+significancia = 0.05
+
+distribuicao = stats.t(df=5) # Graus de liberdade
+
+distribuicao.ppf(q = 1 - (significancia / 2))
+# 2.5705818366147395
+
+limites = [distribuicao.ppf(q = 1 - (significancia / 2))] * len(parametros)
+# 2.5705818366147395, 2.5705818366147395, 2.5705818366147395
+
+
+pareto.plot(limites, parametros, 'r')
+
+grafico_pareto = pareto.get_figure()
+
+grafico_pareto.savefig('graficos/pareto_padronizado.png')
+
+# Como os valores de t da interseção, farinha e chocolate são superiores aos valores de t calculados (limites), as hipóteses nulas devem ser desconsideradas e as variáveis são estatisticamente significativas

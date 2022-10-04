@@ -9,6 +9,7 @@
 * PyDOE2 1.3.0
 * Seaborn 0.11.2
 * Statsmodels 0.13.2
+* Scipy 1.7.3
 
 ## Limites
 |Ingrediente|Limite superior (kg)|Limite inferior (kg)|
